@@ -1,5 +1,6 @@
 {
     "name": "riagie/libraries-utils",
+    "version": "0.0.1",
     "description": "The Cloud Data Center API's libraries.",
     "keywords": [
         "libraries",
