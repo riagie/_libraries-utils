@@ -1,0 +1,52 @@
+{
+    "name": "riagie/libraries-utils",
+    "description": "The Cloud Data Center API's libraries.",
+    "keywords": [
+        "libraries",
+        "server",
+        "client",
+        "automation",
+        "api"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ogie Nurdiana",
+            "email": "ogie.nurdiana447@gmail.com",
+            "homepage": "https://ogienurdiana.com",
+            "role": "developer"
+        }
+    ],
+    "config": {
+        "optimize-autoloader": true,
+        "apcu-autoloader": true,
+        "sort-packages": true
+    },
+    "archive": {
+        "directory": "dist",
+        "skip-dev": false
+    },
+	"composer-runtime-api": "^2.0",
+	"minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.2",
+        "giggsey/libphonenumber-for-php": "^8.12",
+        "php-curl-class/php-curl-class": "^9.5",
+        "phpmailer/phpmailer": "^6.5",
+        "pragmarx/random": "^0.2.2",
+        "ramsey/uuid": "^4.2",
+        "wolfcast/browser-detection": "^2.9",
+        "spatie/array-to-xml": "^2.15"
+    },
+    "require-dev": {
+		"phpunit/phpunit": "^9.5",
+        "symfony/var-dumper": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Libraries\\": "src/"
+        }
+    }
+}
