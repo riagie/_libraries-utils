@@ -489,7 +489,6 @@ After you register your app and get authentication tokens for a user or service,
 
 #### Environment
 - `\Libraries\Utils::getEnv()`
-- parameters
 - response 
 ```
 (
@@ -553,7 +552,6 @@ After you register your app and get authentication tokens for a user or service,
 
 #### Browser
 - `\Libraries\Utils::clientBrowser()`
-- parameters
 - response 
 ```
 (
@@ -580,7 +578,6 @@ After you register your app and get authentication tokens for a user or service,
 
 #### IP
 - `\Libraries\Utils::clientIp()`
-- parameters
 - response 
 ```
 UNKNOWN
