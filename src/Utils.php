@@ -455,51 +455,71 @@ class Utils
      * Set convert object
      * @return string
      */
-    public static function Object($arr) 
+    public static function Object($obj) 
     {
-        if (is_array($arr)) {
-            $new_arr = array();
-            foreach($arr as $k => $v) {
+        if (is_array($obj)) {
+            $new_obj = array();
+            foreach($obj as $k => $v) {
                 if (is_integer($k)) {
-                    $new_arr["index"][$k] = Utils::object($v);
+                    $new_obj["index"][$k] = Utils::object($v);
                 } else {
-                    $new_arr[$k] = Utils::object($v);
+                    $new_obj[$k] = Utils::object($v);
                 }
             }
     
-            return (object) $new_arr;
+            return (object) $new_obj;
         }
         
-        return $arr; 
+        return $obj; 
     }
     
     /**
      * Set convert json
      * @return string
      */
-    public static function Json($convert = "decode", $string, $bool = false) 
+    public static function Json($convert = "decode", $data, $bool = false) 
     {
         if (function_exists("json_encode")) {
             $services = "json_" . $convert;
             if ($bool) {
-                return $services($string, $bool);
+                return $services($data, $bool);
             }
             
-            return $services($string);
+            return $services($data);
         } 
 
         $services = new Services_JSON(SERVICES_JSON_SUPPRESS_ERRORS);
         
-        return $services->$convert($string);
+        return $services->$convert($data);
     }
     
     /**
      * Set convert xml
      * @return string
      */
-    public static function Xml($string, $encoding = "UTF-8", $version = "1.1", $standalone = true) 
+    public static function Xml($array, $encoding = "UTF-8", $version = "1.1", $standalone = true) 
     {
-        return \Spatie\ArrayToXml\ArrayToXml::convert($string, [], true, $encoding, $version, [], $standalone);
+        return \Spatie\ArrayToXml\ArrayToXml::convert($array, [], true, $encoding, $version, [], $standalone);
+    }
+
+    /**
+     * Set convert text
+     * @return string
+     */
+    public static function Text($arr_1, $arr_2) 
+    {
+        $arr_1 = implode("|", $arr_1);
+        $arr_1 = preg_replace('/\s+/', '_', strtoupper($arr_1));
+
+        if (is_array($arr_2)) {
+            foreach ($arr_2 as $k => $v) {
+                $arr_3[$k] = implode("|", $v);
+            }
+
+            $arr_2 = implode("\n", $arr_3);
+        }
+
+        return $arr_1 ."\n". $arr_2;
     }
     
     /**

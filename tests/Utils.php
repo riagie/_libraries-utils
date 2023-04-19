@@ -118,3 +118,17 @@ $xml = [
 ];
 $xml =  \Libraries\Utils::Xml($xml);
 print_r($xml);
+
+echo "\n Text: ";
+$header = array(
+    'dark red',
+    'light green',
+    'blue',
+);
+$massage = array(
+    array('01', '11', '21'),
+    array('02', '12', '22'),
+    array('03', '13', '23'),
+);
+$text =  \Libraries\Utils::Text($header, $massage);
+print_r($text);
