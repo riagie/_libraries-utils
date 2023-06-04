@@ -20,7 +20,7 @@
 /**
  * @package Platform
  * @subpackage Utility
- * Libraries Static function yang sering digunakan di dalam Aplikasi Cloud Data Center API's
+ * Libraries static function often used in Cloud Data Center API's application
  */
 
 namespace Libraries;
