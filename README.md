@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Libraries
 Utils is Libraries Cloud Data Center application programming interfaces (API's) that enables you to access data globally service.
 
@@ -729,3 +730,29 @@ DARK_RED|LIGHT_GREEN|BLUE
 02|12|22
 03|13|23
 ```
+=======
+# _libraries-utils
+
+Util umum yang reusable lintas layanan — terutama generator identifier.
+
+> Dokumen ini sengaja ringkas: hanya kontrak publik. Bahasa implementasi & dependensi
+> mengikuti unit ini; contoh pemakaian lengkap ada di `tests/`.
+
+## API
+
+| Fungsi | Panjang/Format | Contoh hasil |
+|--------|----------------|--------------|
+| `Utils::uuid()` | 36 char | `8c4b8c45-befa-4aa1-8313-c8c37b818d4c` |
+| `Utils::secret()` | 32 char | `5otdrv7lzspfblf65apnetzn4euvtc6m` |
+| `Utils::refnum()` | 32 char uppercase | `E1JL7J341HGV4LTLRDBWAVMGKVL5XJYO` |
+| `Utils::token()` | 28 char | `JvEpqAajNt8VkMRuRnGb34mmwPM7` |
+| `Utils::apiId()` | 10 char | `api-2969052206` |
+| `Utils::ppid(string)` | 16 char alfabet+angka | — |
+
+Panjang/format adalah kontrak lintas layanan & database — perubahan wajib ADR
+(lihat `_docs/guide/DECISIONS.md` / `guide/DECISIONS.md` folder `_libraries`).
+
+## Testing
+
+File uji ada di `tests/` — jalankan sesuai tooling unit saat menambah fungsi baru.
+>>>>>>> 518a26e (chore: initial commit — library aktif (ADR-013: repo per unit))
