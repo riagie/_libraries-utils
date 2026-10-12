@@ -11,8 +11,9 @@ bin/
 tmp/
 dist/
 
-# --- Storage: artefak runtime & hasil proses (log, cookie, test lokal) ---
-# Isi berbeda per environment — seluruhnya git-ignored (keputusan owner, 2026-10-12)
+# --- Storage: artefak runtime & hasil proses (log, cookie) ---
+# Isi berbeda per environment — seluruhnya git-ignored (keputusan owner, 2026-10-12);
+# test suite TIDAK di sini — berada di folder tests/ (ter-track).
 storage/
 
 # --- OS ---

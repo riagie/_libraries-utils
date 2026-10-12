@@ -13,5 +13,5 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["main.ts", "routes/**/*.ts", "src/**/*.ts", "storage/tests/**/*.ts"]
+  "include": ["main.ts", "routes/**/*.ts", "src/**/*.ts", "tests/**/*.ts"]
 }

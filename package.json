@@ -24,7 +24,7 @@
     "dev": "bun --hot main.ts",
     "start": "bun main.ts",
     "build": "bun build --compile main.ts --outfile bin/libraries-utils --external dataloader",
-    "test": "bun test ./storage/tests",
+    "test": "bun test ./tests",
     "format": "bunx prettier --write ."
   },
   "dependencies": {

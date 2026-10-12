@@ -44,7 +44,7 @@ build:
 	@echo "[2/2] Build completed, binary available at ./bin/"
 
 test:
-	@bun test
+	@bun test ./tests
 
 clean:
 	@echo "Cleaning build files..."
