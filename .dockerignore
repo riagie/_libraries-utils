@@ -1,0 +1,18 @@
+# --- Dependensi (di-install ulang di dalam image) ---
+node_modules/
+
+# --- Rahasia & environment (disuntik saat run, bukan dibaking ke image) ---
+.env
+.env.*
+!.env.example
+
+# --- Artefak runtime & hasil proses ---
+storage/
+bin/
+tmp/
+dist/
+
+# --- Arsip parity & meta repo (tidak dibutuhkan runtime) ---
+reference/
+.git/
+.gitignore

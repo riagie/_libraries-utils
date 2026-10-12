@@ -1,0 +1,41 @@
+{
+  "name": "libraries-utils",
+  "version": "1.0.0",
+  "description": "Engine generator identifier & util umum (_libraries-utils) — REST API global internal.",
+  "keywords": [
+    "engine",
+    "libraries",
+    "utils",
+    "identifier",
+    "generator",
+    "refnum",
+    "uuid",
+    "api"
+  ],
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Ogie Nurdiana",
+    "email": "ogie.nurdiana447@gmail.com",
+    "url": "https://ogienurdiana.com"
+  },
+  "scripts": {
+    "dev": "bun --hot main.ts",
+    "start": "bun main.ts",
+    "build": "bun build --compile main.ts --outfile bin/libraries-utils --external dataloader",
+    "test": "bun test ./storage/tests",
+    "format": "bunx prettier --write ."
+  },
+  "dependencies": {
+    "@morojs/moro": "^1.8.0",
+    "google-libphonenumber": "^3.2.44",
+    "swagger-ui-dist": "^5.33.1",
+    "uuid": "^14.0.3",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "typescript": "^5.6.0"
+  }
+}

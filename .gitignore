@@ -1,23 +1,20 @@
-/vendor/
-node_modules/
-npm-debug.log
-yarn-error.log
-
-# Laravel 4 specific
-bootstrap/compiled.php
-app/storage/
-
-# Laravel 5 & Lumen specific
-public/storage
-public/hot
-
-# Laravel 5 & Lumen specific with changed public path
-public_html/storage
-public_html/hot
-
-storage/*.key
+# --- Rahasia & environment ---
 .env
-Homestead.yaml
-Homestead.json
-/.vagrant
-.phpunit.result.cache
+.env.*
+!.env.example
+
+# --- Dependensi ---
+node_modules/
+
+# --- Artefak build ---
+bin/
+tmp/
+dist/
+
+# --- Storage: artefak runtime & hasil proses (log, cookie, test lokal) ---
+# Isi berbeda per environment — seluruhnya git-ignored (keputusan owner, 2026-10-12)
+storage/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
