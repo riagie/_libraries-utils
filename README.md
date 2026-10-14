@@ -16,12 +16,13 @@ kode porting tanpa endpoint TIDAK dibawa ke runtime (ADR-050) — acuannya arsip
 | Kontrak identifier | `uuid, secret, refnum, token, apiId, ppid, unique` | **ENGINE** — format dijaga 1 sumber kebenaran (ADR-LIB-001) |
 | Dependensi berat | `phoneNumber` | **ENGINE** — lib + data carrier tak perlu di-shipping tiap app |
 | Egres eksternal | `geolocation` | **ENGINE** — call keluar + rate limit terpusat |
+| Kontrak format koleksi | `lu` — generator file koleksi endpoint (aturan: `_docs/LU.md`) | **ENGINE** — format koleksi dijaga 1 sumber kebenaran (ADR-056) |
 | Waktu & format | `setStartTime, getElapsedTime, setExpired, Object, Json, Xml, Text, Debug` | **LOKAL** — native di bahasa masing-masing; tanpa endpoint |
 | Konteks request | `clientIp, clientBrowser` | **LOKAL** — data asal ada di pemanggil; parser native |
 | Konteks proses | `getEnv, loadFile, database` | **INTERNAL-ONLY** — konteks proses tak bisa dibawa lewat HTTP (salah konteks) |
 | Standar HTTP internal | `setHeaders, setOpts` | internal engine (helper `geolocation`) |
 
-## Endpoint (9 + info root)
+## Endpoint (10 + info root)
 
 Base: `http://{HOST}:{PORT}` (default `http://127.0.0.1:30150`) — format respon lihat
 section **Format Respon**; path tak dikenal → 404 bentuk framework (satu-satunya
@@ -39,6 +40,7 @@ pengecualian, ADR-054).
 | POST | `/api/v1/unique` | `unique()` — prefix indeks alfabet + digit | `{"character": "D", "length": 6}` (opsional) |
 | POST | `/api/v1/phone-number` | `phoneNumber()` | `{"phone": "081323456789", "country": "ID"}` |
 | POST | `/api/v1/geolocation` | `geolocation()` — lihat **Mode geolocation** | `{"ip": "1.2.3.4"}` (opsional) |
+| POST | `/api/v1/lu` | generator koleksi endpoint (fitur LU) — lihat **Endpoint LU** | `{"name", "baseUrl", "folders"/"requests", ...}` — lihat **Endpoint LU** |
 
 ## Cara Hit
 
@@ -54,6 +56,7 @@ POST http://127.0.0.1:30150/api/v1/unique         body: {"character": "D", "leng
 POST http://127.0.0.1:30150/api/v1/phone-number   body: {"phone": "081323456789"}
 POST http://127.0.0.1:30150/api/v1/geolocation    body: {"ip": "8.8.8.8"}
 POST http://127.0.0.1:30150/api/v1/uuid           body: {"version": 3, "namespace": "dns", "name": "example.org"}
+POST http://127.0.0.1:30150/api/v1/lu             body: {"name": "...", "baseUrl": "...", "requests": [...]}
 
 GET  http://127.0.0.1:30150/                      (info & health)
 ```
@@ -99,6 +102,68 @@ timestamp (bukan untuk kebutuhan kerahasiaan). Input kurang/tidak valid → 400.
 
 Pemanggil yang butuh geo mitra **wajib forward IP via body** — tanpa `ip` untuk kebutuhan
 mitra menghasilkan lokasi server, bukan mitra.
+
+## Endpoint LU (ADR-056 — aturan penuh: `_docs/LU.md`)
+
+`POST /api/v1/lu` menerima definisi endpoint sebuah unit, mengembalikan file koleksi
+endpoint siap pakai (format koleksi standar, kompatibel impor ke aplikasi Postman) via
+`{"data": {...}}`. Hasil disimpan pemanggil sebagai `lu-{unit}.{version}.json` di root
+unit-nya — bukan disimpan engine (tetap stateless).
+
+| Field body | Wajib | Isi |
+|------------|-------|-----|
+| `name` | ya | nama base folder Postman (contoh `@127.0.0.1:2002`) — hasil `info.name` = breadcrumb `name > segmen unitPath` |
+| `unitPath` | ya | path unit — menyusun breadcrumb `info.name` (contoh `_libraries/_libraries-utils` → `... > _libraries > _libraries-utils`); 1+ segmen dipisah `/` tanpa segmen kosong; **TIDAK menjadi folder** |
+| `baseUrl` | ya | URL dasar service (valid) — dipecah 2 variabel environment: `baseUrl` (protocol+host) + `port` (terpisah) |
+| `version` | tidak | versi koleksi — samakan dengan versi service |
+| `description` | tidak | deskripsi koleksi |
+| `folders` | salah satu | daftar folder: `name`, `description?`, `requests[]` (min 1 request) |
+| `requests` | salah satu | daftar request tanpa folder |
+| `variables` | tidak | variabel environment tambahan `{"key", "value"}` — key `baseUrl`/`port` diabaikan (otomatis) |
+
+Item request: `name` (wajib), `path` (wajib), `method` (default `POST`), `query[]`,
+`headers[]`, `body` (string → raw apa adanya; object → nilai otomatis dinamis), `description`.
+Validasi gagal → 400 standar engine.
+
+**Dinamis & environment terpisah** — respon `{"data": {"collection": {...},
+"environment": {...}}}` disimpan 2 file:
+
+| File | Isi |
+|------|-----|
+| `lu-{unit}.{version}.json` | koleksi endpoint — `info.name` = breadcrumb (contoh `@127.0.0.1:2002 > _libraries > _libraries-utils`), `item` langsung folder endpoint; **TANPA variabel** |
+| `lu-{unit}.{version}.environment.json` | environment Postman terpisah — nama UPPERCASE = `{name setelah ':'}: {segmen terakhir unitPath}` (contoh `2002: _LIBRARIES-UTILS`) |
+
+- URL request memakai **`{{baseUrl}}:{{port}}`** (atau `{{baseUrl}}` saja bila baseUrl
+  tanpa port) — ganti host/port cukup edit environment, tanpa sentuh request.
+- Nilai **body object otomatis dinamis**: tiap leaf jadi variabel environment bernama
+  `{nama-request}_{field}` (contoh `ppid_text`); angka/boolean dipakai tanpa quote agar
+  tipe JSON terjaga (contoh `{{uuid_version}}`); body string dibiarkan apa adanya.
+- Workflow Postman: import collection → import environment → **aktifkan environment**
+  tersebut (pojok kanan atas) — semua request & nilai body mengikuti environment aktif.
+- Nama breadcrumb unik per unit — import pertama tidak tabrakan; re-import update
+  (nama sama) → pilih **Replace** = hanya menimpa koleksi unit itu, koleksi lain aman.
+
+Contoh body:
+
+```json
+{
+  "name": "@127.0.0.1:2002",
+  "unitPath": "_libraries/_libraries-utils",
+  "version": "1.0.0",
+  "baseUrl": "http://127.0.0.1:30150",
+  "folders": [
+    { "name": "Generator", "requests": [
+      { "name": "refnum", "path": "/api/v1/refnum" },
+      { "name": "ppid", "path": "/api/v1/ppid", "body": {"text": "DUMMY NAME"} }
+    ]}
+  ],
+  "requests": [ { "name": "info", "method": "GET", "path": "/" } ]
+}
+```
+
+Contoh pemakaian nyata: file `lu-libraries-utils.1.0.0.json` +
+`lu-libraries-utils.1.0.0.environment.json` di root unit ini — di-generate endpoint
+ini dengan definisi endpoint-nya sendiri.
 
 ## Pemanggil Lintas Bahasa
 
@@ -151,17 +216,19 @@ Dokumentasi API (OpenAPI): `GET /docs` saat service berjalan.
 ```
 _libraries-utils/
 ├── main.ts               # entry service
-├── routes/api.ts         # registrasi endpoint (9 inti) + info root
+├── routes/api.ts         # registrasi endpoint (10 inti) + info root
 ├── src/
 │   ├── config/           # baca .env
 │   ├── controllers/      # handler endpoint (ApiController)
-│   ├── helpers/          # generator live + envelope/RC + HTTP helper geolocation + logger
+│   ├── helpers/          # generator live + envelope/RC + HTTP helper geolocation + logger + koleksi LU
 │   ├── middlewares/      # kosong — service global internal tanpa auth (ADR-046);
 │   │                     # logging via helpers/logger (middleware request — ADR-055)
 │   ├── migrations/       # kosong — engine stateless tanpa DB
 │   ├── models/           # kosong — engine stateless tanpa DB
 │   └── types/            # tipe request/response + deklarasi vendor
-├── tests/                # test suite parity (36 test) — ter-track git
+├── tests/                # test suite (52 test) — ter-track git
+├── lu-libraries-utils.1.0.0.json              # koleksi endpoint unit ini (fitur LU)
+├── lu-libraries-utils.1.0.0.environment.json  # environment Postman-nya (aturan: _docs/LU.md)
 ├── storage/              # GIT-IGNORED penuh — artefak runtime (log harian, dll.)
 ├── Makefile, Dockerfile, .dockerignore, docker-entrypoint.sh
 └── .env / .env.example
@@ -180,6 +247,11 @@ _libraries-utils/
   parameter `query` diabaikan layanan geo (selalu ter-resolve ke IP pemanggil).
 - `uuid()` multi-versi: v4 identik arsip (`uuid4()`); v1/v2/v3 = kemampuan baru (ADR-048),
   v3 terkunci test vector resmi.
+- `lu()`: kemampuan baru di luar arsip (ADR-056, revisi ADR-057 s.d. ADR-060 —
+  `unitPath` wajib, nama breadcrumb, environment terpisah, URL & body dinamis) —
+  generator koleksi endpoint semua unit; aturan & konvensi file: `_docs/LU.md`.
+  File koleksi + environment unit ini tidak ikut image container
+  (`.dockerignore` — `lu-*.json`).
 
 ## Testing
 
@@ -187,10 +259,12 @@ _libraries-utils/
 make test
 ```
 
-36 test: kontrak generator (panjang/format), uuid multi-versi (v1–v4 + validasi), format
+60 test: kontrak generator (panjang/format), uuid multi-versi (v1–v4 + validasi), format
 respon engine (kode varchar → HTTP, bentuk data/message, validasi 0400), logger
-(timestamp/rotasi/mask/pasangan REQ-RES), phoneNumber, http helper — kode non-live tidak
-lagi dites (ADR-050). Test suite berada di `tests/` (root unit) dan **ter-track git**.
+(timestamp/rotasi/mask/pasangan REQ-RES), phoneNumber, http helper, koleksi LU (kontrak
+body 0400, breadcrumb, baseUrl/port terpisah, body dinamis, environment terpisah,
+envelope) — kode non-live tidak lagi dites (ADR-050). Test suite berada di `tests/`
+(root unit) dan **ter-track git**.
 
 ## Logging (ADR-055 — aturan penuh: `_docs/LOGS.md`)
 

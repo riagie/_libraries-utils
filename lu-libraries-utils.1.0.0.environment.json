@@ -1,0 +1,81 @@
+{
+  "name": "2002: _LIBRARIES-UTILS",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1",
+      "enabled": true
+    },
+    {
+      "key": "port",
+      "value": "30150",
+      "enabled": true
+    },
+    {
+      "key": "uuid_version",
+      "value": "4",
+      "enabled": true
+    },
+    {
+      "key": "ppid_text",
+      "value": "DUMMY NAME",
+      "enabled": true
+    },
+    {
+      "key": "unique_character",
+      "value": "D",
+      "enabled": true
+    },
+    {
+      "key": "unique_length",
+      "value": "6",
+      "enabled": true
+    },
+    {
+      "key": "phone_number_phone",
+      "value": "081323456789",
+      "enabled": true
+    },
+    {
+      "key": "phone_number_country",
+      "value": "ID",
+      "enabled": true
+    },
+    {
+      "key": "geolocation_ip",
+      "value": "8.8.8.8",
+      "enabled": true
+    },
+    {
+      "key": "lu_name",
+      "value": "@127.0.0.1:2002",
+      "enabled": true
+    },
+    {
+      "key": "lu_unitpath",
+      "value": "_libraries/_libraries-utils",
+      "enabled": true
+    },
+    {
+      "key": "lu_version",
+      "value": "1.0.0",
+      "enabled": true
+    },
+    {
+      "key": "lu_baseurl",
+      "value": "http://127.0.0.1:30150",
+      "enabled": true
+    },
+    {
+      "key": "lu_requests_0_name",
+      "value": "contoh",
+      "enabled": true
+    },
+    {
+      "key": "lu_requests_0_path",
+      "value": "/api/v1/refnum",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

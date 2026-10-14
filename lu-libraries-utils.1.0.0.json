@@ -1,0 +1,331 @@
+{
+  "info": {
+    "_postman_id": "0915aaf2-5db4-480f-992e-6a4c402f83f7",
+    "name": "@127.0.0.1:2002 > _libraries > _libraries-utils",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Engine generator identifier & util umum (_libraries-utils) — koleksi endpoint internal",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Info",
+      "item": [
+        {
+          "name": "info & health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": []
+            },
+            "description": "status, name, env"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Generator Identifier",
+      "description": "Kontrak identifier lintas layanan (ADR-LIB-001)",
+      "item": [
+        {
+          "name": "uuid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/api/v1/uuid",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "uuid"
+              ]
+            },
+            "description": "UUID multi-versi (v1-v4); tanpa body = v4",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"version\": {{uuid_version}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "secret",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/api/v1/secret",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "secret"
+              ]
+            },
+            "description": "32 char lowercase"
+          },
+          "response": []
+        },
+        {
+          "name": "refnum",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/api/v1/refnum",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "refnum"
+              ]
+            },
+            "description": "32 char uppercase"
+          },
+          "response": []
+        },
+        {
+          "name": "token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/api/v1/token",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "token"
+              ]
+            },
+            "description": "28 char mixedcase"
+          },
+          "response": []
+        },
+        {
+          "name": "api-id",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/api/v1/api-id",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "api-id"
+              ]
+            },
+            "description": "api- + 10 digit"
+          },
+          "response": []
+        },
+        {
+          "name": "ppid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/api/v1/ppid",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "ppid"
+              ]
+            },
+            "description": "16 char alfanumerik",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"{{ppid_text}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "unique",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/api/v1/unique",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "unique"
+              ]
+            },
+            "description": "prefix indeks alfabet + digit (body opsional)",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"character\": \"{{unique_character}}\",\n  \"length\": {{unique_length}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Data & Eksternal",
+      "item": [
+        {
+          "name": "phone-number",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/api/v1/phone-number",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "phone-number"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"{{phone_number_phone}}\",\n  \"country\": \"{{phone_number_country}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "geolocation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/api/v1/geolocation",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "geolocation"
+              ]
+            },
+            "description": "tanpa ip = auto-detect IP publik server",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ip\": \"{{geolocation_ip}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "LU Generator",
+      "description": "Generator koleksi endpoint (fitur LU — aturan: _docs/LU.md)",
+      "item": [
+        {
+          "name": "lu",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}:{{port}}/api/v1/lu",
+              "host": [
+                "{{baseUrl}}:{{port}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "lu"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{lu_name}}\",\n  \"unitPath\": \"{{lu_unitpath}}\",\n  \"version\": \"{{lu_version}}\",\n  \"baseUrl\": \"{{lu_baseurl}}\",\n  \"requests\": [\n    {\n      \"name\": \"{{lu_requests_0_name}}\",\n      \"path\": \"{{lu_requests_0_path}}\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

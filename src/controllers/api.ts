@@ -1,13 +1,22 @@
 import * as generators from "../helpers/generators";
 import * as phone from "../helpers/phone";
 import * as httpClient from "../helpers/http_client";
+import { buildLu } from "../helpers/lu";
 import { parseBody } from "../helpers/validation";
 import { respond } from "../helpers/http";
 import { RC_SUCCESS, status } from "../helpers/status_codes";
 import type { HandlerLike } from "../types/app";
-import { GeolocationSchema, PhoneNumberSchema, PpidSchema, UniqueSchema, UuidSchema } from "../types/request";
+import {
+  GeolocationSchema,
+  LuSchema,
+  PhoneNumberSchema,
+  PpidSchema,
+  UniqueSchema,
+  UuidSchema,
+} from "../types/request";
 
-const ok = (res: any, value: unknown) => respond(res, status(RC_SUCCESS, value));
+const ok = (res: any, value: unknown) =>
+  respond(res, status(RC_SUCCESS, value));
 
 export const ApiController: Record<string, HandlerLike> = {
   uuid: (req, res) => {
@@ -39,12 +48,21 @@ export const ApiController: Record<string, HandlerLike> = {
   phoneNumber: (req, res) => {
     const body = parseBody(PhoneNumberSchema, req, res);
     if (body === null) return;
-    return ok(res, phone.phoneNumber(body.phone, body.country ? body.country : "ID"));
+    return ok(
+      res,
+      phone.phoneNumber(body.phone, body.country ? body.country : "ID"),
+    );
   },
 
   geolocation: async (req, res) => {
     const body = parseBody(GeolocationSchema, req, res);
     if (body === null) return;
     return ok(res, await httpClient.geolocation(body.ip));
+  },
+
+  lu: (req, res) => {
+    const body = parseBody(LuSchema, req, res);
+    if (body === null) return;
+    return ok(res, buildLu(body));
   },
 };

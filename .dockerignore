@@ -12,6 +12,9 @@ bin/
 tmp/
 dist/
 
+# --- Koleksi endpoint LU (info internal — aturan: _docs/LU.md) ---
+lu-*.json
+
 # --- Arsip parity & meta repo (tidak dibutuhkan runtime) ---
 reference/
 .git/

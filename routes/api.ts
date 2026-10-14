@@ -1,7 +1,12 @@
 import type { Moro } from "@morojs/moro";
 import { Env } from "../src/config/config";
 import { respond } from "../src/helpers/http";
-import { RC_INTERNAL_ERROR, RC_INVALID_REQUEST, RC_SUCCESS, status } from "../src/helpers/status_codes";
+import {
+  RC_INTERNAL_ERROR,
+  RC_INVALID_REQUEST,
+  RC_SUCCESS,
+  status,
+} from "../src/helpers/status_codes";
 import { ApiController } from "../src/controllers/api";
 import { createRequestLogger } from "../src/helpers/logger";
 
@@ -9,7 +14,10 @@ export async function registerRoutes(app: Moro) {
   await app.use(createRequestLogger());
 
   app.get("/").handler((_req: any, res: any) => {
-    respond(res, status(RC_SUCCESS, { status: "ok", name: Env.NAME, env: Env.ENV }));
+    respond(
+      res,
+      status(RC_SUCCESS, { status: "ok", name: Env.NAME, env: Env.ENV }),
+    );
   });
 
   app.group("/api/v1", (group) => {
@@ -23,6 +31,7 @@ export async function registerRoutes(app: Moro) {
     group.post("/unique").handler(ApiController.unique);
     group.post("/phone-number").handler(ApiController.phoneNumber);
     group.post("/geolocation").handler(ApiController.geolocation);
+    group.post("/lu").handler(ApiController.lu);
   });
 
   app.setErrorHandler((err: any, _req: any, res: any) => {
